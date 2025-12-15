@@ -26,7 +26,15 @@ function saludoprincipal(usuario, fecha, pendientes, evento, comprasArray) {
 
     mensajeSaludo += (" Tenés " + pendientes )+ " pendientes hoy. ";
 
+  //ver como hacer que el mensaje siga sumando cosas... 
+  
+  if (evento) {
+       mensajeSaludo = "Tenés un evento a la tarde ";
+   } else {
+       mensajeSaludo = "No tenés eventos importantes hoy ";
+   }
 
+}
 
 
 
