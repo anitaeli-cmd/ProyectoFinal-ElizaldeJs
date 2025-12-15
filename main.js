@@ -65,4 +65,32 @@ alert(mensajeFinal);
 
 
 
+// estaria bueno ver como poner opciones de fecha, si es trea, evento, pendiente o lista de compras. 
 
+let agregar = prompt ("queres agregar algo a tu agenda? Hacelo a continuacion...");
+
+
+
+
+
+////////////Array eventoss este mes//////////////////////
+
+//lista random de eventos:
+const eventosDiciembre = [
+    { descripcion: "Hilario entrega final", fecha: new Date(2025, 11, 5, 10, 0) },
+    { descripcion: "Cumple Juana", fecha: new Date(2025, 11, 15, 19, 0) }, 
+    { descripcion: "Reunion carpetas", fecha: new Date(2025, 10, 16, 9, 30) },
+    { descripcion: "Navidad con la flia", fecha: new Date(2025, 11, 24, 9, 30) }, 
+    { descripcion: "dermatologo", fecha: new Date(2025, 11, 20, 11, 0) },  
+    { descripcion: "viaje a Bs.As", fecha: new Date(2026, 11, 10, 12, 0) },
+    { descripcion: "Año nuevooooooooo", fecha: new Date(2025, 11, 31, 9, 30) },
+    { descripcion: "Dentista bel", fecha: new Date(2026, 9, 10, 12, 0) }
+];
+
+function Eventosdelmes(listaEventos) {
+    const hoy = new Date();
+    const mesActual = hoy.getMonth();      
+    const añoActual = hoy.getFullYear();   
+
+    console.log("Eventos para " + hoy.toLocaleString('es-AR', { month: 'long', year: 'numeric' }));
+    let eventosEncontrados = 0;
