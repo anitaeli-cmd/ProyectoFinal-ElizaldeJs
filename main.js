@@ -1,7 +1,7 @@
 
 
-//constantes que por ser una aplicacion con usuario ya ingresado no cambian
-//los variables (let) son según el día
+//constantes que por ser una aplicación con usuario ya ingresado, no cambian.
+//los variables (let) son según el día en el que estamos.
 
 const nombreUsuario = "David! ";
 const fechaHoy = new Date();
