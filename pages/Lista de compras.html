@@ -8,14 +8,15 @@
 </head>
 <body>
 
-<div>
-    <h1>LISTA DE COMPRAS</h1>
-
-    <input type="text" id="itemInput" placeholder="Añadir producto...">
-    <button onclick="agregarItem()">Añadir</button>
-    <ul id="listaCompras">
-    </ul>
-
+    <div class="shopping-container">
+    <h2> Lista de Compras</h2>
+    <div class="input-group">
+        <input type="text" id="itemInput" placeholder="Ej. Leche, Huevos...">
+        <button onclick="addItem()">Agregar</button>
+    </div>
+    <ul id="shoppingList">
+        </ul>
+</div>
 
 <div>
   <a href="/index.html">
@@ -23,8 +24,7 @@
 </a>
 </div>
 
+<script src="../main.js"></script>
 
-
-   <script src="main.js"></script>
 </body>
 </html>

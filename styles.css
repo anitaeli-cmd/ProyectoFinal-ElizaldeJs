@@ -90,16 +90,53 @@ button:hover {
     color: darkblue;}
 
 
+    
+.shopping-container {
+    max-width: 600px;
+    margin: 20px auto;
+    background: #bec8a2;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    font-family: sans-serif;
+}
 
-#listaCompras { list-style-type: none; padding: 0; }
-#listaCompras li {
-    background: #f4f4f4;
-    margin: 5px 0;
-    padding: 10px;
-    border-left: 5px solid #4CAF50;
+.input-group {
     display: flex;
-    justify-content: space-between;
-    align-items: center;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+input {
+    flex-grow: 1;
+    padding: 8px;
+    border: 1px solid #f0ebeb;
+    border-radius: 4px;
 }
 
 
+ul {
+    list-style: none;
+    padding: 0;
+}
+
+li {
+    background: #bec8a2;
+    margin-bottom: 8px;
+    padding: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-radius: 4px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+
+.delete-btn {
+    background: #d0424e;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 3px;
+    cursor: pointer;
+    font-size: 0.8rem;
+}

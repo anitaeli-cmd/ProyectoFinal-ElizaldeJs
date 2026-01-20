@@ -32,13 +32,13 @@ const fechaActual = new Date();
 const dia = fechaActual.getDate();
 const mes = fechaActual.getMonth() + 1; 
 const anio = fechaActual.getFullYear(); 
+const queDia = fechaActual.toLocaleDateString("es-ES",{weekday:`long`});
 
 const fechaFormateada = `${dia}/${mes}/${anio}`;
 
 const fechafinal = document.getElementById('fecha-actual');
 
-fechafinal.textContent = `Hoy es ${fechaFormateada}`;
-
+fechafinal.textContent = `Hoy es ${queDia}  ${fechaFormateada}`;
 
 
 
@@ -127,45 +127,53 @@ function modificarTarea(id) {
 }
 //COMPRAS
 
-const itemInput = document.getElementById('itemInput');
-const listaCompras = document.getElementById('listaCompras');
-let items = []; 
+document.addEventListener('DOMContentLoaded', loadList);
 
-function agregarItem() {
-    const item = itemInput.value.trim(); 
-    if (item !== "") { 
-        items.push(item);
-        renderizarLista(); 
-        itemInput.value = '';
-        itemInput.focus(); 
+function addItem() {
+    const input = document.getElementById('itemInput');
+    const text = input.value.trim();
+
+    if (text !== "") {
+        createListItem(text);
+        saveToLocalStorage();
+        input.value = "";
     }
 }
 
-function eliminarItem(index) {
-    items.splice(index, 1); 
-    renderizarLista();
+function createListItem(text) {
+    const list = document.getElementById('shoppingList');
+    const li = document.createElement('li');
+    
+    li.innerHTML = `
+        <span>${text}</span>
+        <button class="delete-btn" onclick="removeItem(this)">Eliminar</button>
+    `;
+    list.appendChild(li);
 }
 
-function renderizarLista() {
-    listaCompras.innerHTML = ''; 
-    items.forEach((item, index) => {
-        const li = document.createElement('li'); 
-        li.innerHTML = `
-            <span>${item}</span>
-            <button onclick="eliminarItem(${index})">Eliminar</button>
-        `;
-        listaCompras.appendChild(li); 
+function removeItem(button) {
+    button.parentElement.remove();
+    saveToLocalStorage(); 
+}
+
+function saveToLocalStorage() {
+    const items = [];
+
+    document.querySelectorAll('#shoppingList span').forEach(span => {
+        items.push(span.innerText);
     });
+ 
+    localStorage.setItem('myShoppingList', JSON.stringify(items));
 }
 
-//PARA AGREGAR EL PROD CON ENTER!!!!
-itemInput.addEventListener('keypress', function(e) {
-    if (e.key === 'Enter') {
-        agregarItem();
+function loadList() {
+    const savedItems = localStorage.getItem('myShoppingList');
+    if (savedItems) {
+        const items = JSON.parse(savedItems);
+        items.forEach(item => createListItem(item));
     }
-});
+}
 
-renderizarLista();
 
 /*
 
@@ -188,30 +196,6 @@ function saludoPrincipal(usuario, fecha, pendientes, evento, comprasArray) {
     }
 
     }
-
-    return mensajeSaludo;
-}
-
-//Llamo mi funcion principal:
-
-const mensajeFinal = saludoPrincipal(
-    nombreUsuario,
-    fechaHoy,
-    totalPendientesHoy,
-    tieneEventoTarde,
-    listaDeCompras
-);
-
-
-alert(mensajeFinal);
-
-
-// estaria bueno ver como poner en el prompt opciones de fecha, si es trea, evento, pendiente o lista de compras. 
-
-let agregar = prompt("queres agregar algo a tu agenda? Hacelo a continuacion...");
-
-
-
 
 
 ////////////Array eventoss este mes//////////////////////
