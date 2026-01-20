@@ -1,14 +1,146 @@
 
+const saludoH1 = document.getElementById('saludo');
+const botonNombre = document.getElementById('btnCambiarNombre');
 
-//constantes que por ser una aplicación con usuario ya ingresado, no cambian.
-//los variables (let) son según el día en el que estamos.
+function cargarNombre() {
+    const nombreEnStorage = localStorage.getItem('nombreUsuario');
+    
+    if (nombreEnStorage) {
+        saludoH1.textContent = `¡Hola, ${nombreEnStorage}!`;
+    } else {
+        saludoH1.textContent = "Hola, usuario";
+    }
+}
+function actualizarNombre() {
+    const nuevoNombre = prompt("¿Cómo quieres que te llame la agenda?");
+    
+    if (nuevoNombre !== null && nuevoNombre.trim() !== "") {
+        localStorage.setItem('nombreUsuario', nuevoNombre.trim());
+        
+        saludoH1.textContent = `Hola, ${nuevoNombre}`;
+    }
+}
 
-const nombreUsuario = "David! ";
-const fechaHoy = new Date();
-let totalPendientesHoy = 3;
-let tieneEventoTarde = true;
+botonNombre.addEventListener('click', actualizarNombre);
 
-//Array
+cargarNombre();
+
+//// fecha /// NO LOGRE PONER DIA ANTES DE LA FECHA (EJ: LUNES)
+
+const fechaActual = new Date();
+
+const dia = fechaActual.getDate();
+const mes = fechaActual.getMonth() + 1; 
+const anio = fechaActual.getFullYear(); 
+
+const fechaFormateada = `${dia}/${mes}/${anio}`;
+
+const fechafinal = document.getElementById('fecha-actual');
+
+fechafinal.textContent = `Hoy es ${fechaFormateada}`;
+
+
+
+
+
+//RECORDATORIOS
+
+const palabra = document.getElementById('palabraMagica');
+
+palabra.addEventListener('click', function() {
+
+    let respuesta = alert ("Tenes que tomar la pastilla y No olvides comprar comida de perro");
+
+    
+})
+
+
+//TAREAS
+
+    let agenda = [];
+
+    function guardarEnStorage() {
+    localStorage.setItem("mis_tareas_2026", JSON.stringify(agenda));
+}
+
+function cargarDeStorage() {
+    const datosGuardados = localStorage.getItem("mis_tareas_2026");
+    if (datosGuardados) {
+        agenda = JSON.parse(datosGuardados);
+        renderizarAgenda();
+    }
+}
+
+// Carga los datos al iniciar la aplicación
+function cargarDeStorage() {
+    const datosGuardados = localStorage.getItem("mis_tareas_2026");
+    if (datosGuardados) {
+        agenda = JSON.parse(datosGuardados);
+        renderizarAgenda();
+    }
+}
+
+//Agregar tarea
+function altaTarea() {
+    const input = document.getElementById("inputTarea");
+    
+    if (input.value.trim() === "") return alert("Tarea agregada");
+
+    const nuevaTarea = {
+        id: Date.now(),
+        titulo: input.value,
+        completada: false
+    };
+
+    agenda.push(nuevaTarea);
+    input.value = ""; 
+    guardarEnStorage();
+    renderizarAgenda(); 
+}
+
+function renderizarAgenda() {
+    const listaUI = document.getElementById("listaTareas");
+    listaUI.innerHTML = ""; 
+
+    agenda.forEach(tarea => {
+        const li = document.createElement("li");
+        li.innerHTML = `
+            <span style="${tarea.completada ? 'text-decoration: line-through' : ''}">
+                ${tarea.titulo}
+            </span>
+            <button onclick="modificarTarea(${tarea.id})">Editar</button>
+            <button onclick="bajaTarea(${tarea.id})">Eliminar</button>
+        `;
+        listaUI.appendChild(li);
+    });
+}
+
+//borrar tarea
+function bajaTarea(id) {
+    agenda = agenda.filter(tarea => tarea.id !== id);
+    guardarEnStorage();
+    renderizarAgenda();
+}
+
+// editar tarea
+function modificarTarea(id) {
+    const tareaEncontrada = agenda.find(t => t.id === id);
+    if (tareaEncontrada) {
+        const nuevoNombre = prompt("Modificar tarea:", tareaEncontrada.titulo);
+        if (nuevoNombre) {
+            tareaEncontrada.titulo = nuevoNombre;
+             guardarEnStorage();
+             renderizarAgenda();
+        }
+    }
+}
+
+/*
+
+HASTA ACA ENTREGA N2
+
+
+//COMPRAS
 
 const listaDeCompras = [
     "verdura",
@@ -53,7 +185,6 @@ function saludoPrincipal(usuario, fecha, pendientes, evento, comprasArray) {
 
 const mensajeFinal = saludoPrincipal(
     nombreUsuario,
-
     fechaHoy,
     totalPendientesHoy,
     tieneEventoTarde,
@@ -103,26 +234,13 @@ if (mesEvento === mesActual && añoEvento === añoActual) {
 const dia = evento.fecha.getDate();
    const hora = evento.fecha.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
     
-   
-// hacer mas amigable el tema de la numeracion de fechas... 
-
-console.log("Día" + dia, hora + "hs: " + evento.descripcion);
-    eventosEncontrados++;
- }
-    }); if (eventosEncontrados === 0) {
-console.log("Este mes no tenes eventos.");
-    }
-}
-
-//LLamo funcion eventos de diciembre:
-
-Eventosdelmes(eventosDiciembre); 
+   */
 
 
-let pendienteimportante = confirm ("¿Ya tomaste el remedio hoy?");
 
-if (pendienteimportante) { 
-    console.log ("Hoy ya tomaste el remedio")
-} else { 
-  console.log("Se creó una alarma para que te lo recuerde en 15 minutos");
-}
+
+
+
+
+//No borrar, para que cargue siempre mi storage
+window.onload = cargarDeStorage;

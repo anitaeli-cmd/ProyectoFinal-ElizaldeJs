@@ -1,22 +1,79 @@
-h1 {
-    text-align: center;
+body {
+    background-image: url(/assets/fondo.png);
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-attachment: fixed;
+}
+
+body {
     font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
-    color: rgb(6, 65, 174);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-top: 80px;
 }
 
-h2 {
+.seccion-bienvenida {
     text-align: center;
+
+}
+
+#saludo {
     font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
-    color: cornflowerblue;
+    font-size: 80px;
+    color: #222;
+    margin-bottom: 10px;
+    text-align: center;
+    font-weight: 700;
 }
 
-h3 {
-    text-align: center;
-    font-family:'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif
-    color: rgb(10, 7, 85);
+button {
+
+    background-color: #a6a027;
+    color: rgb(248, 244, 244);
+    border: none;
+    padding: 5px 15px;
+    border-radius: 8px;
+    font-size: 1rem;
+    cursor: pointer;
+
+
 }
 
-.eventosdelmes {
+.btnNombre {
+    font-size: small;
+
+
+}
+
+button:hover {
+    background-color: #847f1d;
+}
+
+.subtitulo {
+    font-size: 50px;
+    font-style: italic;
+    margin-top: 0;
+
+}
+
+#fecha-actual {
     text-align: center;
+    font-size: 50px;
+    font-style: italic;
+    margin-top: 0;
+}
+
+#palabraMagica {
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    font-size: 25px;
+    background-color: rgb(159, 202, 232);
+    border-radius: 15px;
+    padding: 10px;
+    cursor: pointer;
+}
+#palabraMagica:hover {
+    color: darkblue;}
+
     
-}
