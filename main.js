@@ -71,15 +71,6 @@ function cargarDeStorage() {
     }
 }
 
-// Carga los datos al iniciar la aplicación
-function cargarDeStorage() {
-    const datosGuardados = localStorage.getItem("mis_tareas_2026");
-    if (datosGuardados) {
-        agenda = JSON.parse(datosGuardados);
-        renderizarAgenda();
-    }
-}
-
 //Agregar tarea
 function altaTarea() {
     const input = document.getElementById("inputTarea");
@@ -134,25 +125,51 @@ function modificarTarea(id) {
         }
     }
 }
+//COMPRAS
+
+const itemInput = document.getElementById('itemInput');
+const listaCompras = document.getElementById('listaCompras');
+let items = []; 
+
+function agregarItem() {
+    const item = itemInput.value.trim(); 
+    if (item !== "") { 
+        items.push(item);
+        renderizarLista(); 
+        itemInput.value = '';
+        itemInput.focus(); 
+    }
+}
+
+function eliminarItem(index) {
+    items.splice(index, 1); 
+    renderizarLista();
+}
+
+function renderizarLista() {
+    listaCompras.innerHTML = ''; 
+    items.forEach((item, index) => {
+        const li = document.createElement('li'); 
+        li.innerHTML = `
+            <span>${item}</span>
+            <button onclick="eliminarItem(${index})">Eliminar</button>
+        `;
+        listaCompras.appendChild(li); 
+    });
+}
+
+//PARA AGREGAR EL PROD CON ENTER!!!!
+itemInput.addEventListener('keypress', function(e) {
+    if (e.key === 'Enter') {
+        agregarItem();
+    }
+});
+
+renderizarLista();
 
 /*
 
 HASTA ACA ENTREGA N2
-
-
-//COMPRAS
-
-const listaDeCompras = [
-    "verdura",
-    "cereales",
-    "shampoo",
-    "huevos",
-    "birra",
-    "jamon",
-    "leche",
-    "dulce de leche",
-    "pan"
-];
 
 function saludoPrincipal(usuario, fecha, pendientes, evento, comprasArray) {
     let mensajeSaludo = ("Bienvenido " + usuario);
@@ -170,12 +187,6 @@ function saludoPrincipal(usuario, fecha, pendientes, evento, comprasArray) {
         mensajeSaludo += "No tenés eventos importantes ";
     }
 
-    //array compras
-
-    if (comprasArray.includes("verdura")) {
-        mensajeSaludo += "y no te olvides de ir al super a comprar verdura";
-    } else {
-        mensajeSaludo += "y tus compras están al día";
     }
 
     return mensajeSaludo;
