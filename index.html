@@ -1,87 +1,75 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="styles.css">
     <title>Agenda virtual</title>
 </head>
+
 <body>
 
-<div class="header-agenda">
+    <div class="header-agenda">
         <h1 id="saludo">¡Hola, usuario!</h1>
-   <button class="btnNombre" id="btnCambiarNombre">Cambiar nombre</button>
-         </div>
+        <button class="btnNombre" id="btnCambiarNombre">Cambiar nombre</button>
+    </div>
 
     <main id="contenido-agenda">
         <p class="subtitulo">Bienvenido a tu espacio personal.</p>
-          <h2 id="fecha-actual"> Hoy es </h2>
+        <h2 id="fecha-actual"> Hoy es </h2>
+
+        </div>
+
     </main>
 
-<div>
-    <span id="palabraMagica">RECORDATORIOS</span>
-    
-</div>
+    <div>
+        <span id="palabraMagica">RECORDATORIOS</span>
 
-<!--
-<div>
-<h2>Hoy cumple</h2>
-<h3>esta semana cumplen </h3>
-</div>
--->
-<div>
-    <h2>TAREAS DEL DIA</h2>
- 
-    <input type="text" id="inputTarea" placeholder="Nueva tarea">
-    <button onclick="altaTarea()">Agregar Tarea</button>
-
- 
-    <ul id="listaTareas"></ul>
-    <h4>12:00hs Reunion con Martita</h4>
-    <h4>15:00hs Terminar presentacion</h4>
-    <h4>17:30hs Buscar a Juana, Pepa y Luisa</h4>
-</div> 
+    </div>
 
 
     <div>
-  <a href="/pages/lista de compras.html">
-  <button type="button">LISTA DE COMPRAS</button>
-</a>
-     
+        <h2>TAREAS DEL DIA</h2>
+
+        <input type="text" id="inputTarea" placeholder="Nueva tarea">
+        <button onclick="altaTarea()">Agregar Tarea</button>
+
+
+        <ul id="listaTareas"></ul>
+        <h4>12:00hs Reunion con Martita</h4>
+        <h4>15:00hs Terminar presentacion</h4>
+        <h4>17:30hs Buscar a Juana, Pepa y Luisa</h4>
     </div>
 
+    <div>
+        <a href="/pages/listaCompras.html">
+            <button type="button">CREAR LISTA DE COMPRAS</button>
+        </a>
 
-<!-- HASTA ACA ENTREGA 2
-
-
-
- <div class="eventosdesemana">
-      
-        <p>Hace clic en el botón para cargar los eventos de esta semana.</p>
-        
-        <button id="btnEventosSemana">Eventos esta semana</button>
-      <button id="btn+EventoSemana">Agregar Evento</button>
-
-
-    
-    </div>
- <div class="eventosdelmes">
-      
-        <p>Hace clic en el botón para cargar los eventos del mes.</p>
-        
-        <button id="btnEventos">Eventos mes de Diciembre</button>
-      <button id="btn+Evento">Agregar Evento</button>
+        <div class="contenedor-lista">
+            <h3>Mi Lista de Compras</h3>
+            <ul id="shoppingList">
+            </ul>
+        </div>
 
 
-    
+
     </div>
 
 
 
--->
+
+
+
+
+
+
+
 
 
 
     <script src="main.js"></script>
 </body>
+
 </html>

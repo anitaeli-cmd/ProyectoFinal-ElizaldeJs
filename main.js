@@ -8,7 +8,7 @@ function cargarNombre() {
     if (nombreEnStorage) {
         saludoH1.textContent = `¡Hola, ${nombreEnStorage}!`;
     } else {
-        saludoH1.textContent = "Hola, usuario";
+        saludoH1.textContent = "¡Hola, usuario!";
     }
 }
 function actualizarNombre() {
@@ -25,8 +25,6 @@ botonNombre.addEventListener('click', actualizarNombre);
 
 cargarNombre();
 
-//// fecha /// NO LOGRE PONER DIA ANTES DE LA FECHA (EJ: LUNES)
-
 const fechaActual = new Date();
 
 const dia = fechaActual.getDate();
@@ -34,25 +32,58 @@ const mes = fechaActual.getMonth() + 1;
 const anio = fechaActual.getFullYear(); 
 const queDia = fechaActual.toLocaleDateString("es-ES",{weekday:`long`});
 
+const queDiaCapitalizado = queDia.charAt(0).toUpperCase() + queDia.slice(1);
+
 const fechaFormateada = `${dia}/${mes}/${anio}`;
 
 const fechafinal = document.getElementById('fecha-actual');
 
-fechafinal.textContent = `Hoy es ${queDia}  ${fechaFormateada}`;
-
+fechafinal.textContent = `Hoy es ${queDiaCapitalizado} ${fechaFormateada}`;
 
 
 
 //RECORDATORIOS
 
-const palabra = document.getElementById('palabraMagica');
+//alarma :) (la pongo a los 10 segundos asi no hay q esperar)
 
-palabra.addEventListener('click', function() {
+function sonarAlarma() {
+    const context = new (window.AudioContext || window.webkitAudioContext)();
+    const oscillator = context.createOscillator();
+    const gain = context.createGain();
 
-    let respuesta = alert ("Tenes que tomar la pastilla y No olvides comprar comida de perro");
-
+    oscillator.type = 'sine';
+    oscillator.frequency.setValueAtTime(440, context.currentTime);
     
-})
+    oscillator.connect(gain);
+    gain.connect(context.destination);
+
+    oscillator.start();
+    gain.gain.exponentialRampToValueAtTime(0.00001, context.currentTime + 0.5);
+    oscillator.stop(context.currentTime + 0.5);
+}
+
+function checkPastilla() {
+    const tomoPastilla = confirm("¿Tomaste la pastilla hoy?");
+
+    if (tomoPastilla) {
+        alert("¡Excelente, que tengas lindo dia!");
+    } else {
+        alert("Okk! Programé una alarma en unos minutos para que no te olvides");
+
+        setTimeout(() => {
+            sonarAlarma(); 
+            checkPastilla(); 
+        }, 10000); 
+    }
+}
+
+
+const palabra = document.getElementById('palabraMagica');
+if (palabra) {
+    palabra.addEventListener('click', function() {
+        checkPastilla(); 
+    });
+}
 
 
 //TAREAS
@@ -75,13 +106,21 @@ function cargarDeStorage() {
 function altaTarea() {
     const input = document.getElementById("inputTarea");
     
-    if (input.value.trim() === "") return alert("Tarea agregada");
+    
+    if (input.value.trim() === "") {
+        alert("No agregaste ninguna tarea.");
+        return; 
+    }
 
     const nuevaTarea = {
         id: Date.now(),
         titulo: input.value,
         completada: false
     };
+
+    alert("Tarea agregada con éxito");
+
+    input.value = "";
 
     agenda.push(nuevaTarea);
     input.value = ""; 
@@ -143,26 +182,31 @@ function addItem() {
 function createListItem(text) {
     const list = document.getElementById('shoppingList');
     const li = document.createElement('li');
-    
-    li.innerHTML = `
-        <span>${text}</span>
-        <button class="delete-btn" onclick="removeItem(this)">Eliminar</button>
-    `;
-    list.appendChild(li);
-}
 
-function removeItem(button) {
-    button.parentElement.remove();
-    saveToLocalStorage(); 
+    const span = document.createElement('span');
+    span.textContent = text;
+
+    const btnEliminar = document.createElement('button');
+    btnEliminar.textContent = 'Eliminar';
+    btnEliminar.classList.add('delete-btn');
+
+ 
+    btnEliminar.addEventListener('click', function() {
+        li.remove(); 
+        saveToLocalStorage(); 
+    });
+
+   
+    li.appendChild(span);
+    li.appendChild(btnEliminar);
+    list.appendChild(li);
 }
 
 function saveToLocalStorage() {
     const items = [];
-
     document.querySelectorAll('#shoppingList span').forEach(span => {
-        items.push(span.innerText);
+        items.push(span.textContent); 
     });
- 
     localStorage.setItem('myShoppingList', JSON.stringify(items));
 }
 
@@ -175,67 +219,55 @@ function loadList() {
 }
 
 
-/*
+// LISTA COMPRAS EN PAGINA PRINCIPAL
+document.addEventListener('DOMContentLoaded', () => {
+    loadList();
+});
 
-HASTA ACA ENTREGA N2
+function loadList() {
+    const list = document.getElementById('shoppingList');
+    if (!list) return; 
 
-function saludoPrincipal(usuario, fecha, pendientes, evento, comprasArray) {
-    let mensajeSaludo = ("Bienvenido " + usuario);
-
-
-    mensajeSaludo += ("Hoy es ") + fecha.toLocaleDateString();
-
-
-    mensajeSaludo += (" Hay " + pendientes) + " pendientes. ";
-
-
-    if (evento) {
-        mensajeSaludo += "Tenés un evento a la tarde ";
-    } else {
-        mensajeSaludo += "No tenés eventos importantes ";
+    const savedItems = localStorage.getItem('myShoppingList');
+    if (savedItems) {
+        const items = JSON.parse(savedItems);
+        list.innerHTML = ''; 
+        items.forEach(item => createListItem(item));
     }
+}
 
-    }
+function createListItem(text) {
+    const list = document.getElementById('shoppingList');
+    if (!list) return;
 
+    const li = document.createElement('li');
+    const span = document.createElement('span');
+    span.textContent = text;
 
-////////////Array eventoss este mes//////////////////////
-
-//lista random de eventos:
-const eventosDiciembre = [
-    { descripcion: "Hilario entrega final", fecha: new Date(2025, 11, 5, 10, 0) },
-    { descripcion: "Cumple Juana", fecha: new Date(2025, 11, 15, 19, 0) },
-    { descripcion: "Reunion carpetas", fecha: new Date(2025, 10, 16, 9, 30) },
-    { descripcion: "Navidad con la flia", fecha: new Date(2025, 11, 24, 9, 30) },
-    { descripcion: "dermatologo", fecha: new Date(2025, 11, 20, 11, 0) },
-    { descripcion: "viaje a Bs.As", fecha: new Date(2026, 11, 10, 12, 0) },
-    { descripcion: "Año nuevooooooooo", fecha: new Date(2025, 11, 31, 9, 30) },
-    { descripcion: "Dentista bel", fecha: new Date(2026, 9, 10, 12, 0) }
-];
-
-function Eventosdelmes(listaEventos) {
-    const hoy = new Date();
-    const mesActual = hoy.getMonth();
-    const añoActual = hoy.getFullYear();
-
-    console.log("Eventos para " + hoy.toLocaleString('es-AR', { month: 'long', year: 'numeric' }));
-    let eventosEncontrados = 0;
-
-listaEventos.forEach(evento => {
-   let mesEvento = evento.fecha.getMonth();
-  let añoEvento = evento.fecha.getFullYear();
-
-
-if (mesEvento === mesActual && añoEvento === añoActual) {
-const dia = evento.fecha.getDate();
-   const hora = evento.fecha.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+    const btnEliminar = document.createElement('button');
+    btnEliminar.textContent = 'Eliminar';
     
-   */
+    
+    btnEliminar.addEventListener('click', function() {
+        li.remove(); 
+        saveToLocalStorage(); 
+    });
+
+    li.appendChild(span);
+    li.appendChild(btnEliminar);
+    list.appendChild(li);
+}
+
+function saveToLocalStorage() {
+    const items = [];
+    document.querySelectorAll('#shoppingList span').forEach(span => {
+        items.push(span.textContent); 
+    });
+    localStorage.setItem('myShoppingList', JSON.stringify(items));
+}
 
 
 
 
-
-
-
-//No borrar, para que cargue siempre mi storage
+//NO BORRAR---para que cargue siempre mi storage
 window.onload = cargarDeStorage;
