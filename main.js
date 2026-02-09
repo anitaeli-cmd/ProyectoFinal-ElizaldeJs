@@ -41,10 +41,28 @@ const fechafinal = document.getElementById('fecha-actual');
 fechafinal.textContent = `Hoy es ${queDiaCapitalizado} ${fechaFormateada}`;
 
 
+//CLIMA
+
+document.getElementById("btnclima").addEventListener("click", ()=> {
+
+Toastify({
+
+text: "HACE CLIC ACA PARA IR A LA PAGINA DEL CLIMA",
+gravity: "top",
+position: "center",
+duration: 5000,
+destination: "https://www.meteored.com.ar/tiempo-en_Buenos+Aires-America+Sur-Argentina-Ciudad+Autonoma+de+Buenos+Aires-SABE-1-13584.html"
+
+}).showToast();
+
+
+
+
+})
+
+
 
 //RECORDATORIOS
-
-//alarma :) (la pongo a los 10 segundos asi no hay q esperar)
 
 function sonarAlarma() {
     const context = new (window.AudioContext || window.webkitAudioContext)();
@@ -63,20 +81,44 @@ function sonarAlarma() {
 }
 
 function checkPastilla() {
-    const tomoPastilla = confirm("¿Tomaste la pastilla hoy?");
+    const swalWithBootstrapButtons = Swal.mixin({
+  customClass: {
+    confirmButton: "btn btn-success",
+    cancelButton: "btn btn-danger"
+  },
+  buttonsStyling: false
+});
+swalWithBootstrapButtons.fire({
+  title: "¿Tomaste la pastilla hoy?",
+  icon: "question",
+  showCancelButton: true,
+  confirmButtonText: "Si",
+  cancelButtonText: "No",
+  reverseButtons: true
+}).then((result) => {
+  if (result.isConfirmed) {
+    swalWithBootstrapButtons.fire({
+      title: "¡Buenisimo!",
+      text: "¡Que tengas un lindo dia!",
+      icon: "success"
+    });
+  } else if (
+    result.dismiss === Swal.DismissReason.cancel
+  ) {
+    swalWithBootstrapButtons.fire({
+      title: "Ok",
+      text: "Te lo recuerdo en unos minutos",
+      icon: "warning"
 
-    if (tomoPastilla) {
-        alert("¡Excelente, que tengas lindo dia!");
-    } else {
-        alert("Okk! Programé una alarma en unos minutos para que no te olvides");
+ });
+ setTimeout(() => {
+                sonarAlarma();  
+                checkPastilla();  
+            }, 5000);
+  }
+});
 
-        setTimeout(() => {
-            sonarAlarma(); 
-            checkPastilla(); 
-        }, 10000); 
-    }
 }
-
 
 const palabra = document.getElementById('palabraMagica');
 if (palabra) {
@@ -108,7 +150,11 @@ function altaTarea() {
     
     
     if (input.value.trim() === "") {
-        alert("No agregaste ninguna tarea.");
+        Swal.fire({
+  title: "No agregaste ninguna tarea",
+  icon: "warning",
+  draggable: true
+});;
         return; 
     }
 
@@ -117,8 +163,11 @@ function altaTarea() {
         titulo: input.value,
         completada: false
     };
-
-    alert("Tarea agregada con éxito");
+Swal.fire({
+  title: "¡Tarea agregada!",
+  icon: "success",
+  draggable: true
+});
 
     input.value = "";
 
@@ -139,7 +188,7 @@ function renderizarAgenda() {
                 ${tarea.titulo}
             </span>
             <button onclick="modificarTarea(${tarea.id})">Editar</button>
-            <button onclick="bajaTarea(${tarea.id})">Eliminar</button>
+            <button onclick="bajaTarea(${tarea.id})">Completada</button>
         `;
         listaUI.appendChild(li);
     });
